@@ -1,1 +1,1 @@
-# A tool that obtains the daily commodity prices via email.
+A tool that fetches daily prices of key commodities via email.
