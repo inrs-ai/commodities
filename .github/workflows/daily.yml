@@ -28,8 +28,8 @@ jobs:
 
       - name: Run script
         env:
-          # 从仓库 Secret 中读取 Key，注入到环境变量中
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
         run: python main.py
 
       - name: Commit and Push changes
