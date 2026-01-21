@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>每日大宗商品价格监控</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .latest { background-color: #e6fffa; }
+    </style>
+</head>
+<body>
+    <h1>Crude Oil & Gold 每日趋势</h1>
+    <p>每日北京时间 7:00 更新，保留最近 30 天数据。</p>
+    
+    <table id="priceTable">
+        <thead>
+            <tr>
+                <th>日期 (北京时间)</th>
+                <th>Crude Oil (USD)</th>
+                <th>Gold (USD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <script>
+        // 从同目录下的 data.json 读取数据
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#priceTable tbody');
+                data.forEach((record, index) => {
+                    const row = document.createElement('tr');
+                    if(index === 0) row.classList.add('latest'); // 高亮最新一条
+                    
+                    row.innerHTML = `
+                        <td>${record.date}</td>
+                        <td>${record.prices['Crude Oil'] || 'N/A'}</td>
+                        <td>${record.prices['Gold'] || 'N/A'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error loading data:', error));
+    </script>
+</body>
+</html>
