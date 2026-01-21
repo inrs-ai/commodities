@@ -1,0 +1,42 @@
+name: Daily Commodity Fetch
+
+on:
+  schedule:
+    # UTC 23:00 = 北京时间 07:00
+    - cron: '0 23 * * *'
+  workflow_dispatch: # 允许手动点击按钮触发测试
+
+permissions:
+  contents: write # 必须给予写权限，以便将 data.json 推送回仓库
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance resend pytz pandas
+
+      - name: Run script
+        env:
+          # 从仓库 Secret 中读取 Key，注入到环境变量中
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: python main.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          # 如果没有变化（例如周末休市），则不提交，避免报错
+          git commit -m "Update daily prices" || echo "No changes to commit"
+          git push
