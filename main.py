@@ -63,21 +63,21 @@ def update_json(new_data):
 
 # 3. 发送邮件 (Resend)
 def send_email(record):
+    # 从环境变量读取 API KEY 和 接收邮箱
     api_key = os.environ.get("RESEND_API_KEY")
-    if not api_key:
-        print("Error: RESEND_API_KEY not found.")
+    to_email = os.environ.get("RECEIVER_EMAIL")
+    
+    if not api_key or not to_email:
+        print("Error: Missing RESEND_API_KEY or RECEIVER_EMAIL.")
         return
 
     resend.api_key = api_key
     
-    # 接收邮箱
-    to_email = "your_email@example.com"  # 请修改这里，或者也放入 Secret 中
-    
     prices_str = "\n".join([f"{k}: ${v}" for k, v in record['prices'].items()])
     
     params = {
-        "from": "Daily Report <onboarding@resend.dev>", # 如果你有自定义域名请修改
-        "to": [to_email],
+        "from": "Daily Report <onboarding@resend.dev>", 
+        "to": [to_email], 
         "subject": f"今日大宗商品报价 - {record['date']}",
         "html": f"""
         <h3>每日报价 ({record['date']})</h3>
