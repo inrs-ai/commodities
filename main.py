@@ -83,11 +83,11 @@ def send_email(record):
     <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
         <p style="font-size: 16px;"><b>Hello,Jian!</b></p>
         <p style="font-size: 16px;">以下是今日获取的最新数值：</p>
-        <ul  style="font-size: 16px;">
+        <ul>
             {''.join([f'<li><strong>{k}</strong>: ${v}</li>' for k, v in record['prices'].items()])}
         </ul>
         <hr>
-        <p style="font-size: 12px; color: #888;">Data updated at {record['date']}</p>
+        <p style="font-size: 12px; color: #888;">Data updated at {record['date']} (Beijing Time)</p>
     </div>
         """
     }
