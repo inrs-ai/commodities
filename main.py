@@ -14,18 +14,17 @@ def get_prices():
     for name, symbol in tickers.items():
         try:
             ticker = yf.Ticker(symbol)
-            # 获取当天的最新数据
-            todays_data = ticker.history(period="1d")
-            if not todays_data.empty:
-                #以此取收盘价为例，保留2位小数
-                price = round(todays_data['Close'].iloc[0], 2)
+            # 获取最近3天的数据
+            hist = ticker.history(period="3d")
+            if not hist.empty:
+                # 取最后一行（最近的一个交易日）
+                price = round(hist['Close'].iloc[-1], 2)
                 data[name] = price
             else:
                 data[name] = "N/A"
         except Exception as e:
             print(f"Error fetching {name}: {e}")
             data[name] = "Error"
-    
     return data
 
 # 2. 更新 JSON 数据 (保留最近30条)
@@ -63,34 +62,51 @@ def update_json(new_data):
 
 # 3. 发送邮件 (Resend)
 def send_email(record):
-    # 从环境变量读取 API KEY 和 接收邮箱
     api_key = os.environ.get("RESEND_API_KEY")
     to_email = os.environ.get("RECEIVER_EMAIL")
     
     if not api_key or not to_email:
-        print("Error: Missing RESEND_API_KEY or RECEIVER_EMAIL.")
+        print("Error: Missing API keys.")
         return
 
     resend.api_key = api_key
     
-    prices_str = "\n".join([f"{k}: ${v}" for k, v in record['prices'].items()])
+    # 动态生成列表 HTML
+    items_html = ""
+    for k, v in record['prices'].items():
+        items_html += f"""
+        <div style="margin-bottom: 10px; padding: 10px; border-left: 4px solid #3b82f6; background: #f9fafb;">
+            <span style="font-weight: bold; color: #1f2937;">{k}:</span> 
+            <span style="font-size: 18px; color: #059669; margin-left: 10px;">${v}</span>
+        </div>
+        """
+
+    html_content = f"""
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 500px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+        <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">📊 今日行情速递</h2>
+        <p style="font-size: 14px; color: #6b7280;">更新时间: {record['date']}</p>
+        
+        <div style="margin-top: 20px;">
+            {items_html}
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 12px; color: #9ca3af; text-align: center;">
+            数据来自 Yahoo Finance · 自动发送报告
+        </p>
+    </div>
+    """
     
     params = {
-        "from": "Daily Report <onboarding@resend.dev>", 
-        "to": [to_email], 
-        "subject": f"今日大宗商品报价 - {record['date']}",
-        "html": f"""
-        <p>以下是今日获取的最新数值：</p>
-        <ul>
-            {''.join([f'<li><strong>{k}</strong>: ${v}</li>' for k, v in record['prices'].items()])}
-        </ul>
-        <p>完整历史记录请查看 GitHub Pages。</p>
-        """
+        "from": "Market Report <onboarding@resend.dev>",
+        "to": [to_email],
+        "subject": f"📈 报价通知 - {record['date'].split(' ')[0]}",
+        "html": html_content
     }
     
     try:
-        email = resend.Emails.send(params)
-        print("Email sent successfully:", email)
+        resend.Emails.send(params)
+        print("Email sent successfully!")
     except Exception as e:
         print("Error sending email:", e)
 
