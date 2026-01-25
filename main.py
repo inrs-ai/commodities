@@ -80,7 +80,7 @@ def send_email(record):
         "to": [to_email], 
         "subject": f"今日大宗商品报价 - {record['date']}",
         "html": f"""
-    <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
+        <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
         <p style="font-size: 16px;"><b>Hello,Jian!</b></p>
         <p style="font-size: 16px;">以下是今日获取的最新数值：</p>
         <ul>
@@ -88,7 +88,7 @@ def send_email(record):
         </ul>
         <hr>
         <p style="font-size: 12px; color: #888;">Data updated at {record['date']} (Beijing Time)</p>
-    </div>
+        </div>
         """
     }
     
