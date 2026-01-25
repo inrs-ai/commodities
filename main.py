@@ -80,13 +80,12 @@ def send_email(record):
         "to": [to_email], 
         "subject": f"今日大宗商品报价 - {record['date']}",
         "html": f"""
-        <p<b>Hello,Jian!</b></p>
+        <p>Hello,Jian!</p>
         <p>以下是今日获取的最新数值：</p>
         <ul>
             {''.join([f'<li><strong>{k}</strong>: ${v}</li>' for k, v in record['prices'].items()])}
         </ul>
-        <hr>
-        <p>Data updated at {record['date']} (Beijing Time)</p>
+        <p>Data updated at {record['date']}</p>
         """
     }
     
