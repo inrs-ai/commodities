@@ -80,11 +80,15 @@ def send_email(record):
         "to": [to_email], 
         "subject": f"今日大宗商品报价 - {record['date']}",
         "html": f"""
-        <p>以下是今日获取的最新数值：</p>
-        <ul>
+    <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
+        <p style="font-size: 16px;"><b>Hello,Jian!</b></p>
+        <p style="font-size: 16px;">以下是今日获取的最新数值：</p>
+        <ul  style="font-size: 16px;">
             {''.join([f'<li><strong>{k}</strong>: ${v}</li>' for k, v in record['prices'].items()])}
         </ul>
-        <p>完整历史记录请查看 GitHub Pages。</p>
+        <hr>
+        <p style="font-size: 12px; color: #888;">Data updated at {record['date']}</p>
+    </div>
         """
     }
     
