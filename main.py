@@ -92,7 +92,7 @@ def send_email(record):
 
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            数据来自 Yahoo Finance · 自动发送报告
+            数据来自 yfinance · 自动发送报告
         </p>
     </div>
     """
@@ -100,7 +100,7 @@ def send_email(record):
     params = {
         "from": "Market Report <onboarding@resend.dev>",
         "to": [to_email],
-        "subject": f"📈 报价通知 - {record['date'].split(' ')[0]}",
+        "subject": f"📈 Quotation Update - {record['date'].split(' ')[0]}",
         "html": html_content
     }
     
