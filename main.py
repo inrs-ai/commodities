@@ -83,8 +83,8 @@ def send_email(record):
 
     html_content = f"""
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 500px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">📊 今日行情速递</h2>
-        <p style="font-size: 14px; color: #6b7280;">更新时间: {record['date']}</p>
+        <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">📊 Today's Market Flash</h2>
+        <p style="font-size: 14px; color: #6b7280;">Data updated at {record['date']}</p>
         
         <div style="margin-top: 20px;">
             {items_html}
@@ -92,7 +92,7 @@ def send_email(record):
 
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            数据来自 yfinance · 自动发送报告
+            Data sourced from yfinance · Reports sent automatically
         </p>
     </div>
     """
