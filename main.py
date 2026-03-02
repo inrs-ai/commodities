@@ -83,7 +83,7 @@ def send_email(record):
 
     html_content = f"""
     <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 500px; margin: auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">📊 Today's Market Flash</h2>
+        <h2 style="color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px;">📊 Market Flash</h2>
         <p style="font-size: 14px; color: #6b7280;">Data updated at {record['date']}</p>
         
         <div style="margin-top: 20px;">
