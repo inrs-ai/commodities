@@ -8,7 +8,7 @@ import pytz
 # 1. 获取数据
 # CL=F 是原油期货 (Crude Oil), GC=F 是黄金期货 (Gold)
 def get_prices():
-    tickers = {"Crude Oil": "CL=F", "Gold": "GC=F"}
+    tickers = {"Crude Oil": "CL=F", "Gold": "GC=F", "Copper": "HG=F"}
     data = {}
     
     for name, symbol in tickers.items():
