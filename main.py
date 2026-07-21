@@ -65,7 +65,7 @@ def send_email(record):
     api_key = os.environ.get("RESEND_API_KEY")
     to_email = os.environ.get("RECEIVER_EMAIL")
     from_email = os.environ.get("SENDER_EMAIL")
-    from_addr = f"Market Report <{SENDER_EMAIL}>"
+    from_addr = f"Market Report <{from_email}>"
     
     if not api_key or not to_email:
         print("Error: Missing API keys.")
